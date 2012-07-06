@@ -1,0 +1,267 @@
+En esta sección indicamos los pasos para utilizar subversión bajo el protocolo
+SSH. Se asume que ha configurado sub conexión SSH con el servidor de subversion
+para que admita autentificación automática.
+Véase 
+\htmladdnormallink{
+El capítulo sobre la SSH en los apuntes de Programación en Paralelo II
+(http://nereida.deioc.ull.es/~pp2/perlexamples/chapter\_ssh.html)
+}
+{
+http://nereida.deioc.ull.es/~pp2/perlexamples/chapter_ssh.html
+} para aprender a establecer autentificación automática vía SSH.
+
+\parrafo{Use Subversion: Creación de un Repositorio}
+Parece que en \verb|banot| esta instalado subversion. 
+Para crear un repositorio emita el comando \verb|svnadmin create|:
+
+\begin{verbatim}
+-bash-3.1$ uname -a
+Linux banot.etsii.ull.es 2.6.24.2 #3 SMP Fri Feb 15 10:39:28 WET 2008 i686 i686 i386 GNU/Linux
+-bash-3.1$ svnadmin create /home/loginname/repository/
+-bash-3.1$ ls -l repository/
+total 28
+drwxr-xr-x 2 loginname apache 4096 feb 28 11:58 conf
+drwxr-xr-x 2 loginname apache 4096 feb 28 11:58 dav
+drwxr-sr-x 5 loginname apache 4096 feb 28 12:09 db
+-r--r--r-- 1 loginname apache    2 feb 28 11:58 format
+drwxr-xr-x 2 loginname apache 4096 feb 28 11:58 hooks
+drwxr-xr-x 2 loginname apache 4096 feb 28 11:58 locks
+-rw-r--r-- 1 loginname apache  229 feb 28 11:58 README.txt
+\end{verbatim}
+
+Una alternativa a considerar es ubicar el repositorio 
+en un dispositivo de almacenamiento portable (pendriver)
+
+\parrafo{Añadiendo Proyectos}
+
+Ahora esta en condiciones de añadir proyectos 
+al repositorio creado usando \verb|svn import|:
+\begin{verbatim}
+[loginname@tonga]~/src/perl/> uname -a
+Linux tonga 2.6.24.2 #1 SMP Thu Feb 14 15:37:31 WET 2008 i686 i686 i386 GNU/Linux
+[loginname@tonga]~/src/perl/> pwd
+/home/loginname/src/perl
+[loginname@tonga]~/src/perl/> ls -ld /home/loginname/src/perl/Grammar-0.02
+drwxr-xr-x 5 loginname Profesor 4096 feb 28  2008 /home/loginname/src/perl/Grammar-0.02
+[loginname@tonga]~/src/perl/> svn import -m 'Grammar Extended Module' \
+                                        Grammar-0.02/ \
+                                        svn+ssh://banot/home/loginname/repository/Grammar
+Añadiendo      Grammar-0.02/t
+Añadiendo      Grammar-0.02/t/Grammar.t
+Añadiendo      Grammar-0.02/lib
+Añadiendo      Grammar-0.02/lib/Grammar.pm
+Añadiendo      Grammar-0.02/MANIFEST
+Añadiendo      Grammar-0.02/META.yml
+Añadiendo      Grammar-0.02/Makefile.PL
+Añadiendo      Grammar-0.02/scripts
+Añadiendo      Grammar-0.02/scripts/grammar.pl
+Añadiendo      Grammar-0.02/scripts/Precedencia.yp
+Añadiendo      Grammar-0.02/scripts/Calc.yp
+Añadiendo      Grammar-0.02/scripts/aSb.yp
+Añadiendo      Grammar-0.02/scripts/g1.yp
+Añadiendo      Grammar-0.02/Changes
+Añadiendo      Grammar-0.02/README
+
+Commit de la revisión 2.
+\end{verbatim}
+
+En general, los pasos para crear un nuevo proyecto son:
+
+\begin{verbatim}
+* mkdir /tmp/nombreProyecto
+* mkdir /tmp/nombreProyecto/branches
+* mkdir /tmp/nombreProyecto/tags
+* mkdir /tmp/nombreProyecto/trunk
+* svn mkdir file:///var/svn/nombreRepositorio/nombreProyecto -m 'Crear el proyecto nombreProyecto'
+* svn import /tmp/nombreProyecto \
+            file:///var/svn/nombreRepositorio/nombreProyecto \
+            -m "Primera versión del proyecto nombreProyecto"
+\end{verbatim}
+
+
+\parrafo{Obtener una Copia de Trabajo}
+
+La copia en \verb|Grammar-0.02| ha sido usada para la creación del proyecto, 
+pero no pertenece aún al proyecto. Es necesario descargar la copia del
+proyecto que existe en el repositorio. Para ello usamos
+\verb| svn checkout|:
+\begin{verbatim}
+[loginname@tonga]~/src/perl/> rm -fR Grammar-0.02
+[loginname@tonga]~/src/perl/> svn checkout svn+ssh://banot/home/loginname/repository/Grammar Grammar
+A    Grammar/t
+A    Grammar/t/Grammar.t
+A    Grammar/MANIFEST
+A    Grammar/META.yml
+A    Grammar/lib
+A    Grammar/lib/Grammar.pm
+A    Grammar/Makefile.PL
+A    Grammar/scripts
+A    Grammar/scripts/grammar.pl
+A    Grammar/scripts/Calc.yp
+A    Grammar/scripts/Precedencia.yp
+A    Grammar/scripts/aSb.yp
+A    Grammar/scripts/g1.yp
+A    Grammar/Changes
+A    Grammar/README
+Revisión obtenida: 2
+\end{verbatim}
+Ahora disponemos de una copia de trabajo del proyecto en
+nuestra máquina local:
+\begin{verbatim}
+[loginname@tonga]~/src/perl/> tree Grammar
+Grammar
+|-- Changes
+|-- MANIFEST
+|-- META.yml
+|-- Makefile.PL
+|-- README
+|-- lib
+|   `-- Grammar.pm
+|-- scripts
+|   |-- Calc.yp
+|   |-- Precedencia.yp
+|   |-- aSb.yp
+|   |-- g1.yp
+|   `-- grammar.pl
+`-- t
+    `-- Grammar.t
+
+3 directories, 12 files
+[loginname@tonga]~/src/perl/>       
+[loginname@tonga]~/src/perl/> cd Grammar
+[loginname@tonga]~/src/perl/Grammar/> ls -la
+total 44
+drwxr-xr-x 6 loginname Profesor 4096 feb 28  2008 .
+drwxr-xr-x 5 loginname Profesor 4096 feb 28  2008 ..
+-rw-r--r-- 1 loginname Profesor  150 feb 28  2008 Changes
+drwxr-xr-x 3 loginname Profesor 4096 feb 28  2008 lib
+-rw-r--r-- 1 loginname Profesor  614 feb 28  2008 Makefile.PL
+-rw-r--r-- 1 loginname Profesor  229 feb 28  2008 MANIFEST
+-rw-r--r-- 1 loginname Profesor  335 feb 28  2008 META.yml
+-rw-r--r-- 1 loginname Profesor 1196 feb 28  2008 README
+drwxr-xr-x 3 loginname Profesor 4096 feb 28  2008 scripts
+drwxr-xr-x 6 loginname Profesor 4096 feb 28  2008 .svn
+drwxr-xr-x 3 loginname Profesor 4096 feb 28  2008 t
+\end{verbatim}
+Observe la presencia de los subdirectorios de control \verb|.svn|.
+
+\parrafo{Actualización del Proyecto}
+
+Ahora podemos modificar el proyecto y hacer públicos los cambios 
+mediante \verb|svn commit|:
+\begin{verbatim}
+loginname@tonga]~/src/perl/Grammar/> svn rm META.yml
+D         META.yml
+[loginname@tonga]~/src/perl/Grammar/> ls -la
+total 40
+drwxr-xr-x 6 loginname Profesor 4096 feb 28  2008 .
+drwxr-xr-x 5 loginname Profesor 4096 feb 28 12:34 ..
+-rw-r--r-- 1 loginname Profesor  150 feb 28 12:34 Changes
+drwxr-xr-x 3 loginname Profesor 4096 feb 28 12:34 lib
+-rw-r--r-- 1 loginname Profesor  614 feb 28 12:34 Makefile.PL
+-rw-r--r-- 1 loginname Profesor  229 feb 28 12:34 MANIFEST
+-rw-r--r-- 1 loginname Profesor 1196 feb 28 12:34 README
+drwxr-xr-x 3 loginname Profesor 4096 feb 28 12:34 scripts
+drwxr-xr-x 6 loginname Profesor 4096 feb 28  2008 .svn
+drwxr-xr-x 3 loginname Profesor 4096 feb 28 12:34 t
+[loginname@tonga]~/src/perl/Grammar/> echo "Modifico README" >> README
+[loginname@tonga]~/src/perl/Grammar/> svn commit -m 'Just testing ...'
+Eliminando     META.yml
+Enviando       README
+Transmitiendo contenido de archivos .
+Commit de la revisión 3.
+\end{verbatim}
+Observe que ya no es necesario especificar el lugar en el que se encuentra
+el repositorio: esa información esta guardada en los subdirectorios
+de administración de subversion \verb|.svn|
+
+El servicio de subversion parece funcionar desde fuera de la red del centro.
+Véase la conexión desde una maquina exterior:
+
+\begin{verbatim}
+pp2@nereida:/tmp$  svn checkout svn+ssh://loginname@banot.etsii.ull.es/home/loginname/repository/Grammar Grammar
+loginname@banot.etsii.ull.es's password:
+loginname@banot.etsii.ull.es's password:
+A    Grammar/t
+A    Grammar/t/Grammar.t
+A    Grammar/MANIFEST
+A    Grammar/lib
+A    Grammar/lib/Grammar.pm
+A    Grammar/Makefile.PL
+A    Grammar/scripts
+A    Grammar/scripts/grammar.pl
+A    Grammar/scripts/Calc.yp
+A    Grammar/scripts/Precedencia.yp
+A    Grammar/scripts/aSb.yp
+A    Grammar/scripts/g1.yp
+A    Grammar/Changes
+A    Grammar/README
+Revisión obtenida: 3
+\end{verbatim}
+
+\parrafo{Comandos Básicos}
+
+\begin{itemize}
+\item
+    Añadir y eliminar directorios o ficheros individuales al proyecto
+\begin{verbatim}
+      svn add directorio_o_fichero
+      svn remove directorio_o_fichero
+\end{verbatim}
+\item Guardar los cambios
+\begin{verbatim}
+      svn commit -m "Nueva version"
+\end{verbatim}
+\item Actualizar el proyecto
+\begin{verbatim}
+      svn update
+\end{verbatim}
+\item Ver el estado de los ficheros
+\begin{verbatim}
+      svn status -vu
+\end{verbatim}
+\item Crear un tag
+
+\begin{verbatim}
+      svn copy svn+ssh://banot/home/logname/repository/PL-Tutu/trunk \
+               svn+ssh://banot/home/casiano/repository/PL-Tutu/tags/practica-entregada \
+	       -m 'Distribución como fué entregada en la UDV'
+\end{verbatim}
+\end{itemize}
+
+\parrafo{Referencias}
+
+Consulte
+\htmladdnormallink{
+http://svnbook.red-bean.com/
+}
+{
+http://svnbook.red-bean.com/
+}.
+Vea la página de la ETSII
+\htmladdnormallink{
+http://www.etsii.ull.es/svn
+}
+{
+http://www.etsii.ull.es/svn
+}.
+
+En KDE puede instalar el cliente gráfico KDEsvn.
+
+\parrafo{Autentificación Automática}
+
+Para evitar la solicitud de claves cada vez que se comunica 
+con el repositorio establezca autentificación SSH automática.
+Para ver como hacerlo puede consultar las instrucciones en:
+
+\htmladdnormallink{
+http://search.cpan.org/~casiano/GRID-Machine/lib/GRID/Machine.pod\#INSTALLATION
+}
+{
+http://search.cpan.org/~casiano/GRID-Machine/lib/GRID/Machine.pod\#INSTALLATION
+}
+
+Consulte también las páginas del manual Unix de
+\verb|ssh|, \verb|ssh-key-gen|, \verb|ssh_config|, \verb|scp|, \verb|ssh-agent|, \verb|ssh-add|, \verb|sshd|
+
+

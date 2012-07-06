@@ -1,0 +1,5 @@
+Este proyecto fue creado por pp2:
+
+pp2@nereida:/tmp$ svn import -m 'Perl Bibliography' PERLBIB/ svn+ssh://casiano@orion.pcg.ull.es/var/svn/casiano/BIBTEX/PERLBIB
+Importacion por pl:
+nereida:~/doc/casiano/PERLBIB> svn checkout svn+ssh://casiano@orion.pcg.ull.es/var/svn/casiano/BIBTEX/PERLBIB/trunk PERLBIB

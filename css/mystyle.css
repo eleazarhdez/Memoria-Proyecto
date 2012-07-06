@@ -1,0 +1,105 @@
+@import url(print.css) print;
+
+/* Century Schoolbook font is very similar to Computer Modern Math: cmmi */
+.MATH    { font-family: "Century Schoolbook", serif; }
+.MATH I  { font-family: "Century Schoolbook", serif; font-style: italic }
+.BOLDMATH { font-family: "Century Schoolbook", serif; font-weight: bold }
+
+/* implement both fixed-size and relative sizes */
+SMALL.XTINY		{ font-size : xx-small }
+SMALL.TINY		{ font-size : x-small  }
+SMALL.SCRIPTSIZE	{ font-size : smaller  }
+SMALL.FOOTNOTESIZE	{ font-size : small    }
+SMALL.SMALL		{  }
+BIG.LARGE		{  }
+BIG.XLARGE		{ font-size : large    }
+BIG.XXLARGE		{ font-size : x-large  }
+BIG.HUGE		{ font-size : larger   }
+BIG.XHUGE		{ font-size : xx-large }
+
+/* heading styles */
+H1		{  }
+H2		{  }
+H3		{  }
+H4		{  }
+H5		{  }
+
+/* mathematics styles */
+DIV.displaymath		{ }	/* math displays */
+TD.eqno			{ }	/* equation-number cells */
+
+
+/* document-specific styles come next */
+DIV.logo-LaTeX		{   }
+SPAN.itshape		{   }
+/* PRE.preform		{   } */
+/* pre { color: #fff; background-color: #000; padding: 10px; } */
+pre { color: LightGreen; font-size: larger; background-color: black; padding: 10px; overflow-x: none; } /* width: 900px;} */
+tr pre { color: LightGreen; font-size: larger; background-color: black; padding: 10px; width: auto; overflow-x: none; } 
+/* CODE             { color: brown; padding: 10px; } */
+CODE             { color: brown; }
+i i              { color: red; }
+
+/* @media print { CODE {color: black; } } */
+
+BLOCKQUOTE { background-color: #ADD8E6; }
+DIV.Large		{   }
+DIV.small		{   }
+DIV.quote		{   }
+DIV.center		{   }
+DIV.verse		{   }
+DIV.flushleft		{   }
+TABLE.equation*		{  }
+SPAN.it		{   }
+DIV.navigation		{   }
+SPAN.bfseries		{   }
+TABLE.equation		{  }
+DIV.LaTeX		{   }
+SPAN.tt		{   }
+DIV.alltt		{   }
+SPAN.textbf		{ /* font-weight: bold; */
+                          color: red  
+                        }
+SPAN.arabic		{   }
+SPAN.textit		{ font-style: italic  }
+#txt11739		{ text-decoration: underline;  }
+#txt11742		{ text-decoration: underline;  }
+#txt11746		{ text-decoration: underline;  }
+#txt1228		{ text-decoration: underline;  }
+#txt1229		{ text-decoration: underline;  }
+#txt13194		{ text-decoration: underline;  }
+#txt13290		{ text-decoration: underline;  }
+#txt13291		{ text-decoration: underline;  }
+#txt13292		{ text-decoration: underline;  }
+#txt1796		{ text-decoration: underline;  }
+#txt1797		{ text-decoration: underline;  }
+#txt1798		{ text-decoration: underline;  }
+#txt1799		{ text-decoration: underline;  }
+#txt3485		{ text-decoration: underline;  }
+#txt7186		{ text-decoration: underline;  }
+#txt7229		{ text-decoration: underline;  }
+#txt7230		{ text-decoration: underline;  }
+#txt7757		{ text-decoration: underline;  }
+
+/* Template::Plugin::VimColor style */
+
+  /* pre { color: green; background-color: #000; padding: 10px; } */
+  pre { color: LightGreen; background-color: black; padding: 10px; }
+  i pre { font-style: normal; }
+
+  span.lightblue { color: #ADD8E6; }
+  span.red { color: red; }
+  span.synComment { color: blue; }
+  span.synConstant { color: red; }
+  span.synIdentifier { color: aqua; }
+  span.synStatement { color: yellow; }
+  span.synPreProc { color: fuchsia; }
+  span.synType { color: lime; }
+  span.synSpecial { color: fuchsia;  }
+  span.synUnderlined { color: fuchsia; text-decoration: underline; }
+  span.synError { background-color: red; color: white; font-weight: bold; }
+  span.synTodo { background-color: yellow; color: black; }
+  span.Linenum { color: yellow; }
+
+/* used for perl debugger to signal user input */
+ span.dbuser { font-style:normal; color: #00FFFF; }

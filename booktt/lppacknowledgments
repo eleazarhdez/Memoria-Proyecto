@@ -1,0 +1,23 @@
+\chapter*{A Juana}
+\vspace{8cm}
+{\it
+\begin{Large}
+\begin{verse}
+\flushright 
+For it is in teaching that we learn\\
+And it is in understanding that we are understood
+\end{verse}
+\end{Large}
+}
+
+\chapter*{Agradecimientos/Acknowledgments}
+\begin{verse}
+\flushright \it
+I'd like to thank 
+%\vspace{2cm}
+%\vspace{2cm}
+
+[% alumnosacknowledge %]
+\end{verse}
+
+

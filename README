@@ -1,0 +1,6 @@
+Be sure to install:
+   latex
+   latex2html
+   template toolkit:
+     sudo cpan Template 
+

@@ -1,0 +1,64 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{html} 
+
+\usepackage[spanish]{babel}    
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+
+\topmargin -10 mm
+\headheight 0 mm
+\headsep 0 mm
+\textheight 265 mm
+\oddsidemargin -10.8 mm
+\evensidemargin -10.8 mm
+\textwidth 18 cm
+\columnsep 0 mm
+\pagestyle{empty}
+
+%\author{Casiano R. León }
+[% PERL -%]
+use Data::Dumper;
+
+my $notas = $stash->get('notas');
+open my $f, $notas or die "can't find file '$notas'\n";
+
+my %c = map { /(\D+)\s+(\d+[,.']?\d*)/ } <$f>;
+my @c = sort keys %c;
+my @d = map { +{ name => $_, cal => $c{$_} } } @c;
+#print Dumper \@d;
+
+$stash->set('calificaciones', \@d);
+[% END -%]
+
+\begin{document}
+\bodytext{BGCOLOR="#ffffff"}
+\begin{center}
+{\bf [% asignatura %]\\
+Prueba [% fecha %]\\
+} 
+\end{center}
+
+\vspace{0.25cm}
+
+\begin{center}
+\begin{tabular}{|l|r|}
+\hline
+[% FOREACH alu IN calificaciones %]
+  [% alu.name %] & [% alu.cal %] \\ \hline
+[% END %]
+\end{tabular}
+\end{center}
+
+\vspace{0.75cm}
+\begin{center}
+La Laguna \today{}
+\end{center}
+\vspace{1cm}
+
+\noindent El profesor: \hfill [% profesor %] (\verb|[% email %]|, [% telefono %])
+
+\vspace{0.5cm}
+
+\end{document}
+
+

@@ -1,0 +1,9 @@
+[% FOREACH link IN navigation %]
+  \htmladdtonavigation{\htmladdnormallink{
+     \htmladdimg[
+                 width=[% link.exists('width')? link.width : 40 %] 
+                 alt="[% link.alt %]"
+                ]
+     {[% link.img %]}}
+     {[% link.url %]}} 
+[% END %]

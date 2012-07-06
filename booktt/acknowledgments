@@ -1,0 +1,47 @@
+\chapter*{A Juana}
+\vspace{8cm}
+{\it
+\begin{Large}
+\begin{verse}
+\flushright 
+For it is in teaching that we learn\\
+And it is in understanding that we are understood
+\end{verse}
+\end{Large}
+}
+
+\chapter*{Agradecimientos/Acknowledgments}
+\begin{verse}
+\flushright \it
+I'd like to thank 
+Tom Christiansen, 
+Damian Conway, 
+Simon Cozens,
+Francois Desarmenien,
+Richard Foley,
+Jeffrey E.F. Friedl, 
+Joseph N. Hall, 
+Tim Jennes,
+Andy Lester,
+Allison Randall,
+Randal L. Schwartz, 
+Michael Schwern, 
+Peter Scott, 
+Sriram Srinivasan, 
+Linconl Stein, 
+Dan Sugalski,
+Leopold Tötsch,
+Nathan Torkington and 
+Larry Wall 
+for their books and/or their modules. 
+To the Perl Community.
+
+\vspace{2cm}
+
+Special thanks to Larry Wall for giving us Perl.
+
+\vspace{2cm}
+
+[% alumnosacknowledge %]
+\end{verse}
+

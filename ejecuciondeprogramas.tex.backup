@@ -1,0 +1,383 @@
+
+\section{Instación de RVM (Ruby Version Manager)} %{\tt system}}
+
+Para instalar RVM en un sistema Linux teclearemos en un terminal: \begin{comment}\perldocf{system} \end{comment}:
+\begin{verbatim}
+bash <<(curl -s https://rvm.beginrescueend.com/install/rvm)
+\end{verbatim}
+Se trata de un script en bash que clona RVM de su repositorio en GitHub.
+Requiere que algunas dependencias estén instaladas. Para ello teclearemos previamente en un terminal
+\begin{verbatim}
+sudo aptitude install build-essential git-core curl
+\end{verbatim}
+El contenido de RVM se ubicara en el directorio \verb|~/.rvm|.
+Para que nuestra terminal pueda trabajar con RVM sin problemas debemos agregar la siguiente línea al fichero \verb|~/.bash_profile|:
+\begin{verbatim}
+'[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function'
+\end{verbatim}
+Posteriormente habrá que recargar la shell. Para ello abrimos una nueva terminal y tecleamos:
+\begin{verbatim}
+source .bash_profile
+source ~/.rvm/scripts/rvm
+\end{verbatim}
+Si la instalación y la configuración han sido exitosas, al teclear 
+\begin{verbatim}
+type rvm | head -1
+\end{verbatim}
+nos debe aparecer rvm: es una función. En caso contrario la instalación no habrá finalizado correctamente.
+\begin{comment}En el ejemplo hemos usado comillas simples para impedir que Perl interpole la variable
+\verb|$PATH|. Quien debe interpolarla es la shell que ejecutará el comando.
+También es posible escribir:
+\begin{verbatim}
+system "echo \$PATH"
+\end{verbatim}
+
+\parrafo{Redirección y {\tt system}}
+
+Cuando el comando usado como argumento no implica redirección, canales
+(pipes), etc. el comando es
+ejecutado por Perl. Perl crea un proceso hijo el cual ejecuta 
+el comando. En caso contrario Perl llama a la shell
+para que ejecute el comando.
+En este segundo caso el comando se convierte en un proceso nieto del programa Perl.
+
+\begin{verbatim}
+lhp@nereida:~/Lperl/src/perl_networking/ch2$ cat -n system.pl
+     1  system('ps -fu lhp');
+     2  system('echo -----------------');
+     3  system('ps -fu lhp | grep system');
+\end{verbatim}
+produce una salida como:
+\begin{verbatim}
+ lhp@nereida:~/Lperl/src/perl_networking/ch2$ perl system.pl
+ UID        PID  PPID  C STIME TTY          TIME CMD
+ ...       ....  ....  . ..... .....    ........ .........
+ lhp       1556  1544  0 Mar01 pts/6    00:00:00 /bin/bash
+ lhp       2932 15408  0 15:20 pts/10   00:00:00 perl system.pl
+ lhp       2933  2932  0 15:20 pts/10   00:00:00 ps -fu lhp
+ -----------------
+ lhp       2854  5412  0 15:11 pts/4    00:00:00 /usr/bin/perl /usr/bin/perldoc -f system
+ lhp       2932 15408  0 15:20 pts/10   00:00:00 perl system.pl
+!lhp       2935  2932  0 15:20 pts/10   00:00:00 sh -c ps -fu lhp | grep system
+ lhp       2937  2935  0 15:20 pts/10   00:00:00 grep system
+\end{verbatim}
+
+Esto es lo que dice el manual de \man{sh} sobre la opción \verb|-c|:
+\begin{verbatim}
+-c string If  the  -c  option  is  present, then commands are read from
+           string.  If there are arguments after the  string,  they  are
+           assigned to the positional parameters, starting with $0.
+\end{verbatim}
+
+\parrafo{Uso con mas de un Argumento}
+
+Si se llama al comando \perldocf{system} con mas de un argumento Perl no
+llamará a la shell, cualquiera
+que sea la forma del comando. En ese caso, el primer argumento se
+interpreta como el nombre
+del comando y los siguientes como los argumentos para el mismo.
+Ningún metacarácter shell (redirecciones, pipes, etc.) será interpretado.
+Por ejemplo:
+
+\begin{verbatim}
+lhp@nereida:~/Lperl/src/perl_networking/ch2$ cat -n system2.pl
+     1  system('echo','hola','>','juan.txt');
+lhp@nereida:~/Lperl/src/perl_networking/ch2$ perl system2.pl
+hola > juan.txt
+\end{verbatim}
+El valor devuelto por \perldocf{system} es el status del proceso hijo,
+tal y como lo devuelve la función \perldocf{wait} (vea la sección 
+\ref{section:fork}). Para obtener el valor de retorno del programa
+hay que hacer un shift right 8 a ese valor.
+\begin{verbatim}
+lhp@nereida:~/Lperl/src/perl_networking/ch2$ cat -n status.pl
+     1  my $s = system('ls -l /chuchu');
+     2  print "$s\n";
+lhp@nereida:~/Lperl/src/perl_networking/ch2$ perl status.pl
+ls: /chuchu: No existe el fichero o el directorio
+256
+\end{verbatim}
+La funcion \perldocf{system} retorna \verb|-1| si el programa no se pudo
+arrancar. 
+
+\parrafo{Seguridad y {\tt system}}
+
+Supongamos un guión cuya
+función es enviar un cierto fichero \verb|$filename|
+a una dirección de  e-mail \verb|$address| que se lee desde un fichero o un socket:
+
+\begin{verbatim}
+chomp($address = <$in>);
+system "/usr/sbin/sendmail $address < $filename";
+\end{verbatim}
+
+Este guión tiene un hueco en su seguridad. Supongamos que un usuario
+malintencionado da como entrada:
+
+
+\begin{verbatim}
+travieso@hotmail.com < /etc/passwd; cat > /dev/null
+\end{verbatim}
+
+esto resultará en la ejecución de:
+\begin{verbatim}
+system "/usr/sbin/sendmail travieso@hotmail.com < /etc/passwd; cat > /dev/null < $filename";
+\end{verbatim}
+
+y el fichero \verb|/etc/passwd| será enviado a \verb|travieso@hotmail.com|.
+
+Obsérvese que esto no ocurre si el guión anterior se sustituye por:
+\begin{verbatim}
+chomp($address = <$in>);
+open STDIN, "< $filename";
+system "/usr/sbin/sendmail", $address;
+\end{verbatim}
+dado que los símbolos de redirección pierden su valor como metasímbolos.
+
+\begin{exercise}
+Estudie e instale el módulo 
+\htmladdnormallink{{\tt Proc::Background}}{http://search.cpan.org/dist/Proc-Background/}.
+desde CPAN en su máquina.
+Explique su funcionamiento.
+¿Considera que el módulo es fiable?
+Lea el fichero \verb|Makefile.PL|. Coméntelo. 
+¿Que hace la opción \verb|PL_FILES|?
+Explique el funcionamiento del ejecutable \tei{timed-process}.
+¿Que hace la opción \verb|require_order| de \verb|GetOpt::Long|?
+\end{exercise}
+\end{comment}
+
+\section{Instalación de Ruby }%{\tt exec}}
+\label{section:exec}
+Una vez instalado RVM procedemos a instalar una versión de Ruby. En nuestro caso instalamos la 1.9.3 tal que así:
+\begin{verbatim}
+rvm install 1.9.3
+\end{verbatim}
+Este comando descargará las fuentes de Ruby, las extraerá en \verb|~/.rvm|, lo compilará, y finalmente lo instalará.
+Ahora hay que indicarle a RVM la versión de Ruby a usar, en este caso la 1.9.3
+\begin{verbatim}
+rvm use 1.9.3
+\end{verbatim}
+Para comprobar la versión que estamos usando tecleamos en un terminal:
+\begin{verbatim}
+ruby -v
+\end{verbatim}
+y nos deberá aparecer un mensaje similar a este:
+\begin{verbatim}
+ruby 1.9.3p194 (2012-04-20 revision 35410) [i686-linux]
+\end{verbatim}
+
+La nueva tarea  tendrá exactamente el mismo \wikip{PID}{process\_identifier} que el programa Perl:
+\begin{verbatim}
+pp2@nereida:~/src/perl$ cat exec1.pl
+#!/usr/local/bin/perl -w
+use strict;
+print "$$\n";
+exec '/bin/echo $$'
+pp2@nereida:~/src/perl$ exec1.pl
+8422
+8422
+\end{verbatim}
+
+Al igual que con \perldocf{system}, si se usa la sintáxis con lista de argumentos
+los metacaracteres shell no son interpretados.
+\begin{verbatim}
+$ cat exec.pl
+#!/usr/bin/perl -w
+exec '/bin/echo', 'Los argumentos son: ', @ARGV;
+\end{verbatim}
+Al ejecutar protegemos los argumentos con comillas simples de su interpretación por la
+shell:
+\begin{verbatim}
+lhp@nereida:~/Lperl/src$ ./exec.pl 'uno' '| ls ' '| who > quien'
+Los argumentos son:  uno | ls  | who > quien
+\end{verbatim}
+
+\parrafo{Usando {\tt exec} para Modificar el Entorno de Ejecución de un Programa}
+Habitualmente usamos el comando de la shell
+\verb|source| cuando queremos modificar las variables de entorno 
+comandos desde un fichero de comandos.
+Suelo usar las funciones \perldocf{exec} y \perldocf{system} de Perl cuando tengo
+que crear dinámicamente el programa  a ejecutar o tengo 
+que establecer un entorno de trabajo complicado antes de la ejecución de un programa existente.
+Este es un fragmento de una rutina que envuelve la ejecución desacoplada de un programa 
+para su ejecución en una máquina remota vía SSH:
+
+\begin{verbatim}
+sub wrapexec {
+  my $exec = shift;
+
+  my $dir = getcwd;
+  my $program =<< 'EOPROG'; 
+chdir "<<$dir>>" || die "Can't change to dir <<$dir>>\n";
+%ENV = (<<$ENV>>);
+$| = 1;
+my $success = !system("<<$exec>>");
+warn "GRID::Machine::Core::wrapexec warning!. Execution of '<<$exec>>' returned Status: '$?'.".
+     " Success value from system call: '$success'\n" unless $success;
+unlink('<<$scriptname>>');
+exit(0);
+EOPROG
+
+  $exec =~ /^\s*(\S+)/; # mmm.. no options?
+  my $execname = $1;
+  # Executable can be in any place of the PATH search 
+  my $where = `which $execname 2>&1`;
+
+  # skip if program 'which' can't be found otherwise check that $execname exists
+  unless ($?) {
+    die "Error. Can't find executable for command '$execname'.".
+        " Where: '$where'\n" unless  $execname && $where =~ /\S/;
+  }
+
+  # name without path
+  my ($name) = $execname =~ m{([\w.]+)$};
+  $name ||= '';
+
+  my $ENV = "'".(join "',\n  '", %ENV)."'";
+
+  # Create a temp perl script with pattern /tmp/gridmachine_driver_${name}XXXXX
+  my $filename = "gridmachine_driver_${name}";
+  my $tmp = File::Temp->new( TEMPLATE => $filename.'XXXXX', DIR => File::Spec->tmpdir(), UNLINK => 0);
+  my $scriptname = $tmp->filename;
+
+  $program =~ s/<<\$dir>>/$dir/g;
+  $program =~ s/<<\$ENV>>/$ENV/g;
+  $program =~ s/<<\$exec>>/$exec/g;
+  $program =~ s/<<\$scriptname>>/$scriptname/g;
+
+  print $tmp $program;
+
+  close($tmp);
+  return $scriptname;
+}
+\end{verbatim}
+
+\begin{exercise}
+
+En 
+\htmladdnormallink{
+http://www.perlmonks.org/
+}
+{http://www.perlmonks.org/?node_id=37353}
+apareció la siguiente pregunta (busque por el tópico {\tt calling Unix commands}):
+\begin{verbatim}
+Hi, I'm trying write a script that will call a unix comand and either
+post the results or parse the results then post them. I thought perhaps
+I could accomplish this with exec or system. However, I haven't been
+able to figure it out. Any insight would be much appreciated. Thanx
+\end{verbatim}
+Comente las respuestas.
+Estudie el módulo 
+\htmladdnormallink{
+{\tt Shell}
+}
+{http://search.cpan.org/perldoc?Shell}
+y discuta su implementación.
+
+Explique la salida:
+
+\begin{verbatim}
+pp2@nereida:~/Lbook$ perl -wde 0
+main::(-e:1):   0
+  DB<1> use Shell qw(echo cat ps cp)
+  DB<2> s $foo = echo("howdy", "funny", "world")
+main::((eval 7)[/usr/share/perl/5.8/perl5db.pl:628]:3):
+3:      $foo = echo("howdy", "funny", "world");
+  DB<<3>> s
+Shell::AUTOLOAD(/usr/share/perl/5.8/Shell.pm:132):
+132:        shift if ref $_[0] && $_[0]->isa( 'Shell' );
+  DB<<3>> n
+Shell::AUTOLOAD(/usr/share/perl/5.8/Shell.pm:133):
+133:        my $cmd = $AUTOLOAD;
+  DB<<3>>
+Shell::AUTOLOAD(/usr/share/perl/5.8/Shell.pm:134):
+134:        $cmd =~ s/^.*:://;
+  DB<<3>> p $cmd
+Shell::echo
+  DB<<4>> n
+Shell::AUTOLOAD(/usr/share/perl/5.8/Shell.pm:136):
+136:        *$AUTOLOAD = _make_cmd($cmd);
+  DB<<4>> n
+Shell::AUTOLOAD(/usr/share/perl/5.8/Shell.pm:137):
+137:        goto &$AUTOLOAD;
+  DB<<4>> x @_
+0  'howdy'
+1  'funny'
+2  'world'
+  DB<<5>> c
+  DB<6> p $foo
+howdy funny world
+\end{verbatim}
+\end{exercise}
+
+\section{Variables de entorno}
+El hash \verb|%ENV| contiene las variables de entorno. Su modificación implica la modificación
+del entorno del programa.
+\begin{verbatim}
+$ENV{PATH} = $ENV{PATH}:"/home/casiano/bin";
+delete $ENV{DISPLAY};
+system 'myls';
+\end{verbatim}
+En este ejemplo el program \verb|myls| es ejecutado en un entorno en el cual el \verb|PATH| incluye
+a \verb|/home/casiano/bin| y la variable \verb|DISPLAY| ha sido suprimida.
+
+\begin{exercise}
+En Perlmonks apareció la siguiente pregunta (puede encontrarla buscando en
+\htmladdnormallink{
+http://www.perlmonks.org/
+}
+{http://www.perlmonks.org/?node_id=9474}
+por 'Environmental Settings'.
+\begin{verbatim}
+I require some assistance. I am writing a CGI script in Perl on Solaris
+that needs to run external commands using the 'system' operator. These
+commands are part of a larger package that needs the system initialized
+(via a command) properly before execution, or else each individual
+command cannot interact with the other, like the following.
+
+1: system "/PATH/initialize_system"; # init the environment
+2: system "/PATH/skew.k ARG_FOR_FRAME_NUMBER"; # create image
+3: system "/PATH/savegif.k FRAME_NUMBER"; # save image off
+4: system "exit"; # exit the environment created with initialize_system
+
+When running a command using 'system', the environment appears to only
+lasts until the next line of Perl code, so line 2 can't talk to line
+3 because the environment required for them to communicate isn't there
+which is initialized by line 1. The above code snippet would the way it
+is run from a command line. 
+
+Any help would be appreciated. 
+Thanks.
+\end{verbatim}
+
+¿Cuál es su respuesta?
+
+\end{exercise}
+
+\begin{exercise}
+Ejecute los comandos:
+\begin{verbatim}
+$ set | grep "^[A-Z]" |wc
+$ perl -e 'print "$_ = $ENV{$_}\n" for sort keys %ENV;' | wc
+\end{verbatim}
+¿A que se debe la diferencia?.
+Observe el siguiente experimento:
+\begin{verbatim}
+$ FOO='Hello, World!'
+$  perl -le'print $ENV{FOO}'
+$
+$ export FOO='Hello, World!'
+$  perl -le'print $ENV{FOO}'
+Hello, World!
+
+\end{verbatim}
+%Consulte el módulo 
+%\htmladdnormallink{
+%{\tt Env::Bash}
+%}
+%{http://search.cpan.org/perldoc?Env::Bash}.
+%Discuta su funcionalidad.
+
+\end{exercise}
+

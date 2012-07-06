@@ -1,0 +1,6 @@
+\printindex
+\label{indicealfabetico}
+
+\bibliographystyle{unsrt}
+\bibliography{perlbib/perl}
+\end{document}

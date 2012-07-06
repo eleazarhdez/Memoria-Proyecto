@@ -1,0 +1,35 @@
+\documentclass[spanish,a4paper,11pt]{article}
+
+\usepackage{latexsym,amsfonts,amssymb,amstext,amsthm,float,amsmath}
+
+\usepackage[spanish]{babel}    
+\usepackage{html}
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+
+\usepackage[dvips]{epsfig}  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%123456789012345678901234567890123456789012345678901234567890123456789
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Format
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\topmargin -10 mm
+\headheight 0 mm
+\headsep 0 mm
+\textheight 265 mm
+\oddsidemargin -10.8 mm
+\evensidemargin -10.8 mm
+\textwidth 18 cm
+\columnsep 0 mm
+\pagestyle{empty}
+\input{amssym.def}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%     
+%
+% En la cabecera hay que cambiar al FECHA de la convocatoria
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%     
+
+
+\input{booktt/commontex/commands.tex}
+

@@ -1,0 +1,271 @@
+\newcommand{\datetofill}{\rule{5mm}{.1pt}/\rule{5mm}{.1pt}/\rule{10mm}{.1pt}}
+
+% Comandos para el índice de referencias cruzadas
+\newcommand{\infinity}{\infty}
+
+\newcommand{\ici}[1]
+  {\index{#1}}
+
+\newcommand{\perlcookbook}[2]
+  {\htmladdnormallink{#1}{http://docstore.mik.ua/orelly/perl/cookbook/#2}}
+ 
+\newcommand{\pci}[1]
+  {\index{Práctica!#1}}
+ 
+\newcommand{\ci}[1]
+  {\index{#1}#1}
+ 
+\newcommand{\cei}[1]
+  {\index{#1}\emph{#1}}
+
+\newcommand{\ceis}[2]
+  {\index{#2}\emph{#1}}
+
+\newcommand{\tei}[1]
+  { {\tt #1} } %{\index{#1}{{\tt #1}}}
+
+\newcommand{\htei}[1]
+  { #1 } %{\index{#1}}
+
+
+\newcommand{\teis}[2]
+  {\index{#2}{{\tt #1}}}
+
+\newcommand{\xsub}[1]
+  {\index{XSUB!{\tt #1}}
+   {\tt #1}
+  }
+
+\newcommand{\typemap}[1]
+  {\index{typemap!{\tt #1}}
+   {\tt #1}
+  }
+
+\newcommand{\api}[1]
+  {\index{Perl API!{\tt #1}}
+   {\tt #1}
+  }
+
+
+\newcommand{\parrafo}[1]
+{ 
+  \paragraph{#1}
+  \begin{tabular}{c}
+  \end{tabular}
+}
+
+\newcommand{\sectionpractica}[1]
+  {\section{Práctica: #1}
+   \index{Práctica!#1}
+  }
+
+\newcommand{\subsectionpractica}[1]
+  {\subsection{Práctica: #1}
+   \index{Práctica!#1}
+  }
+
+\newcommand{\subsubsectionpractica}[1]
+  {\subsubsection{Práctica: #1}
+   \index{Práctica!#1}
+  }
+
+\newcommand{\sectionejercicio}[1]
+  {\section{Ejercicio: #1}
+   \index{Ejercicio!#1}
+  }
+
+\newcommand{\parrafopractica}[1]
+  {\parrafo{Práctica: #1}
+   \index{Práctica!#1}
+  }
+
+\newcommand{\subsectionejercicio}[1]
+  {\subsection{Ejercicio: #1}
+   \index{Ejercicio!#1}
+  }
+
+\newcommand{\subsubsectionejercicio}[1]
+  {\subsubsection{Ejercicio: #1}
+   \index{Ejercicio!#1}
+  }
+
+
+\newcommand{\subsectionrepaso}[1]
+  {\subsection{Repaso: #1}
+   \index{Repaso!#1}
+  }
+
+\newcommand{\eref}[1]
+  {\externalref{#1} \cite{CasianoIntroAPerl}}
+
+\newcommand{\regexpg}{\cpan{Regexp::Grammars}}
+
+\newcommand{\rgsec}[2]
+ {\htmladdnormallink{#1}
+ {http://search.cpan.org/~dconway/Regexp-Grammars/lib/Regexp/Grammars.pm\##2}}
+
+\newtheorem{definition}{Definición}[section] 
+\newtheorem{theorem}{Teorema}[section] 
+\newtheorem{algorithm}{Algoritmo}[section] 
+\newtheorem{program}{Programa}[section] 
+\newtheorem{exercise}{Ejercicio}[section] 
+%\newtheorem{lab}{Práctica \addcontentsline{toc}{section}{hola}}[section] 
+
+\newtheorem{example}{Ejemplo}[section] 
+\newtheorem{execution}{Ejecución}[section] 
+\newtheorem{listing}{Listado}[section] 
+\newtheorem{advice}{Consejo}[section] 
+\newtheorem{scheme}{Esquema}[section] 
+
+\newenvironment{unicodeverb}
+{\begin{htmlonly}\begin{verbatim}}
+{\end{verbatim}\end{htmlonly}}
+
+%\newcommand{bcita}[0]
+%{\begin{it}\begin{quote}}
+%
+%\newcommand{ecita}{[0]
+%{\end{quote}\end{it}}}
+
+\newcommand{\modern}{{\it Modern Perl}}
+
+\newcommand{\lhp}[2]
+{\htmladdnormallink{#1}
+{http://nereida.deioc.ull.es/~lhp/perlexamples/node#2.html}}
+
+\newcommand{\man}[1]
+{\htmladdnormallink{#1}
+{http://manpages.debian.net/cgi-bin/man.cgi?query=#1}}
+
+\newcommand{\manuk}[1]
+{\htmladdnormallink{#1}
+{http://unixhelp.ed.ac.uk/CGI/man-cgi?#1}}
+
+\newcommand{\mandragonfly}[1]
+{\htmladdnormallink{#1}
+{http://leaf.dragonflybsd.org/cgi/web-man?command=#1&section=ANY}}
+
+\newcommand{\manopenbsd}[1]
+{\htmladdnormallink{#1}
+{http://www.openbsd.org/cgi-bin/man.cgi?query=#1}}
+
+\newcommand{\link}[2]
+{\htmladdnormallink{#1}
+{#2}}
+
+
+\newcommand{\cpan}[1]
+ {\htmladdnormallink{#1}
+ {http://search.cpan.org/perldoc?#1}}
+
+%%%%%%%%%%%%%%%%%% git
+\newcommand{\githelp}[2]
+ {\htmladdnormallink{#1}
+ {http://help.github.com/#2/}}
+
+\newcommand{\rake}
+ {\htmladdnormallink{Rake}
+ {http://rake.rubyforge.org/}}
+
+\newcommand{\rubyforge}[2]
+ {\htmladdnormallink{#1}
+ {http://rake.rubyforge.org/classes/#2}}
+
+%%%%%%%%%%%%%%%%% ruby
+\newcommand{\rubymod}[1]
+ {\htmladdnormallink{#1}
+ {http://ruby-doc.org/core-1.8.7/#1.html}}
+
+\newcommand{\rubycoreclassmethod}[2]
+ {\htmladdnormallink{#1}
+ {http://www.ruby-doc.org/core-1.8.7/#2.html\#method-c-#1}}
+
+\newcommand{\rubycoreinstancemethod}[2]
+ {\htmladdnormallink{#1}
+ {http://www.ruby-doc.org/core-1.8.7/#2.html\#method-i-#1}}
+
+\newcommand{\rubyclass}[2]
+ {\htmladdnormallink{#1}
+ {http://ruby-doc.org/core-1.8.7/#2.html}}
+
+\newcommand{\rubystdlibclass}[2]
+ {\htmladdnormallink{#1}
+ {http://ruby-doc.org/stdlib-1.8.7/libdoc/#2.html}}
+
+\newcommand{\rubypackage}[1]
+ {\htmladdnormallink{#1}
+ {http://www.ruby-doc.org/stdlib-1.8.7/libdoc/#1/rdoc/}}
+
+%%%%%%%%%%%%%%%%% ruby
+
+\newcommand{\cpanf}[2]
+ {\htmladdnormallink{#2}
+ {http://search.cpan.org/perldoc?#1\##2}}
+
+\newcommand{\gnereida}[1]
+ {\htmladdnormallink{#1}
+ {http://www.google.es/search?q=site:nereida.deioc.ull.es+#1&ie=UTF-8&hl=es}}
+
+\newcommand{\gdefine}[1]
+ {\htmladdnormallink{#1}
+ {http://www.google.com/search?q=define:#1}}
+
+\newcommand{\googlecode}[1]
+ {\htmladdnormallink{#1}
+ {http://code.google.com/p/#1/}}
+
+\newcommand{\perldocf}[1]
+{\htmladdnormallink{{\tt #1}}
+{http://www.ayni.com/perldoc/functions/#1.html}}
+
+\newcommand{\perldoc}[1]
+{\htmladdnormallink{{\tt #1}}
+{http://search.cpan.org/perldoc/?#1}}
+
+\newcommand{\vim}{\htmladdnormallink{{\tt vim}}{http://www.vim.org/}}
+
+\newcommand{\vimdoc}[2]
+{\htmladdnormallink{{\tt #1}}
+{http://vimdoc.sourceforge.net/htmldoc/#2}}
+
+\newcommand{\pd}[2]
+{la sección '#2' en \htmladdnormallink{{\tt #1}}
+{http://perldoc.perl.org/#1.html\##2}}
+
+\newcommand{\wikipedia}[2]
+{\htmladdnormallink{#1}
+{http://en.wikipedia.org/wiki/#1}}
+
+\newcommand{\wikip}[2]
+{\htmladdnormallink{#1}
+{http://en.wikipedia.org/wiki/#2}}
+
+
+\newcommand{\perlmonk}[1]
+{\htmladdnormallink{PerlMonks}
+{http://www.perlmonks.org/?node_id=#1}}
+
+\newcommand{\pmm}[2]
+{\htmladdnormallink{#2}
+{http://www.perlmonks.org/?node_id=#1}}
+
+
+\newcommand{\code}[1]
+  {{\tt #1}}
+
+\newcommand{\perlmarkmail}[1]
+{\htmladdnormallink{#1}
+{http://perl.markmail.org/search/?q=#1}}
+
+\newcommand{\cpandist}[1]
+{\htmladdnormallink{{\tt #1}}
+{http://search.cpan.org/dist/#1}}
+
+\newcommand{\I}[1]
+  {{\it #1}}
+
+%http://svnbook.red-bean.com/nightly/en/svn.branchmerge.basicmerging.html
+\newcommand{\svnbook}[2]{\htmladdnormallink{#1}{http://svnbook.red-bean.com/nightly/en/#2.html}}
+%\newcommand{\svnbook}[2]{\htmladdnormallink{#1}{http://svnbook.red-bean.com/en/1.5/#2.html}}
+\newcommand{\svnb}[2]{\htmladdnormallink{#1}{http://svnbook.red-bean.com/en/1.5/#2}}
+

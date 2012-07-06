@@ -1,0 +1,131 @@
+[% title  = 'Proyecto Ruby on Rails' %]
+[% author = 'Eleazar Borja Hernández Padilla \\thanks{DEIOC Universidad de La Laguna}' %]
+[% 
+   navigation = [
+     #{ alt ="practica",   img = 'entregaPP2.jpeg', url = 'http://nereida.deioc.ull.es/PP2/uploadpractica.pl' },
+     #{ alt = "historico", img = 'map.jpg', url = 'http://nereida.deioc.ull.es/PP2/cgisearch.pl#historico'   }, 
+     #{ alt = "busca en apuntes", img = "searchbook.jpeg", url = "http://nereida.deioc.ull.es/PP2/cgisearch.pl"},
+     { alt = "PP2", img = "pp2.jpg", width = 35,  url = "http://nereida.deioc.ull.es/~pp2/"},
+     { alt = "PP2 moodle", img = "moodlePP2logo.jpeg", width = 50, url = "http://campusvirtual.ull.es/ocw/course/view.php?id=44" },
+     { alt = "ps", img = "gv.jpeg", width = 30, url = "perlexamples.pdf"},
+     #{ alt = "errata", img = "icon_errata.jpg", width = 35, url = "perl_errata_form.html"},
+     { alt = "modulos", img = "lupa.gif", width = 60, url = "http://search.cpan.org/"},
+     { alt = "perlmonks", img = "monk.gif", width = 35, url = "http://www.perlmonks.org/?node=Seekers of Perl Wisdom"},
+    { alt = "perldoc", img = "perlonion.jpeg", width = 30, url = "http://perldoc.perl.org/"},
+
+
+     { alt = "perlcritic", img = "perlcritic.jpeg", width = 27, url = "http://www.perlcritic.org/"},     { alt = "pbp", img = "pbp.jpeg", width = 27, url = "refguide.pdf"},
+     { alt = "google code project hosting", img = "google-code-project-hosting.jpeg", width = 27, url = "http://code.google.com/hosting/"},
+
+     { alt = "intro a Perl", img = "logoLHP.jpg", width = 25, url = "http://nereida.deioc.ull.es/~lhp/perlexamples/"},
+     { alt = "Modern Perl", img = "modernperllogo.png", width = 32, url = "http://www.onyxneon.com/books/modern_perl/modern_perl_a4.pdf"},
+
+     { alt = "blogs", img = "perlonion.jpeg", width = 27, url = "http://blogs.perl.org/"},
+     { alt = "google", img = "ggoogle.gif", width = 35, url = "http://www.google.es/"},
+     { alt = "etsii", img = "etsii.png", width = 35, url = "http://www.etsii.ull.es/"},
+     #{ alt = "cc", img = "ccetsii.jpeg", width = 22, url = "http://www.etsii.ull.es/linuxgrafico/plugin/Java/index.html"},
+     { alt = "ull", img = "ull.gif", width = 35, url = "http://www.ull.es/"},
+     { alt = "pcgull", img = "logopcgull.gif", width = 32, url = "http://nereida.deioc.ull.es/"},
+   ]
+%]
+
+[%   externallabels = 'lhplabels.pl' %]
+[% 
+   PROCESS booktt/preamble 
+   #PROCESS booktt/sonypreamble 
+%]
+
+
+\begin{document}
+
+\topmargin=5pt
+\maketitle
+
+[%
+  textlicense = 'http://campusvirtual.ull.es/ocw';
+  urllicense = 'http://campusvirtual.ull.es/ocw/course/view.php?id=44';
+  PROCESS booktt/creativecommonscopyright
+%]
+
+%\externallabels{}
+
+\tableofcontents 
+\listoffigures
+\listoftables
+
+
+[%
+alumnosacknowledge = 'A mis alumnos de 
+Programación Paralelo II en el segundo curso de la Ingeniería 
+Superior Informática en la Universidad de La Laguna'
+%]
+
+[% PROCESS booktt/acknowledgments %]
+
+\chapter{Instalación del entorno}
+\label{chapter:ejecuciondeprogramas}
+\input{ejecuciondeprogramas.tex}
+
+
+\part*{Apéndice}
+
+\chapter*{Instrucciones Para la Carga de Módulos en la ETSII}
+\label{apendice:modulosetsii}
+\input{booktt/commontex/modulosetsii.tex} 
+
+\chapter*{Usando Subversion}
+\input{booktt/commontex/svn.tex} 
+
+\chapter*{Código de {\tt 01MartelloAndTothBook.t}}
+\label{apendice:01martello}
+\begin{verbatim}
+lhp@nereida:/tmp/Algorithm-Knap01DP-0.01/t$ cat -n 01MartelloAndTothBook.t
+ 1  # Before `make install' is performed this script should be runnable with
+ 2  # `make test'. After `make install' it should work as `perl Algorithm-Knap01DP.t'
+ 3
+ 4  #########################
+ 5  use strict;
+ 6  use Test::More  tests => 11;
+ 7
+ 8  BEGIN { use_ok('Algorithm::Knap01DP', qw/Knap01DP ReadKnap/); }
+ 9
+10  ### main
+11  my @inputfiles = qw/knap21.dat  knap22.dat  knap23.dat  knap25.dat/;
+12  my @sol = (280, 107, 150, 900);
+13  my $knap21 = ['102', [ '2', '20', '20', '30', '40', '30', '60', '10' ],
+14                    [ '15', '100', '90', '60', '40', '15', '10', '1' ]];
+15  my $knap22 = ['50',  [ '31', '10', '20', '19', '4', '3', '6' ],
+16                    [ '70', '20', '39', '37', '7', '5', '10' ]];
+17  my $knap23 = ['190', [ '56', '59', '80', '64', '75', '17' ],
+18                    [ '50', '50', '64', '46', '50', '5' ]];
+19  my $knap25 = ['104', [ '25', '35', '45', '5', '25', '3', '2', '2' ],
+20                    [ '350', '400', '450', '20', '70', '8', '5', '5' ]];
+21
+22  my $knapsackproblem = [$knap21, $knap22, $knap23, $knap25];
+23
+24  my $i = 0;
+25  my ($M, $w, $p);
+26  my @f;
+27
+28  # Now 2*@inputfiles = 8 tests
+29  for my $file (@inputfiles) {
+30    ($M, $w, $p) = ReadKnap((-e "t/$file")?"t/$file":$file);
+31    is_deeply($knapsackproblem->[$i], [$M, $w, $p], "ReadKnap $file");
+32    my $N = @$w;
+33    @f = Knap01DP($M, $w, $p);
+34    is($sol[$i++], $f[$N-1][$M], "Knap01DP $file");
+35  }
+36
+37  # test to check when weights and profits do not have the same size
+38  $M = 100; @$w = 1..5; @$p = 1..10;
+39  eval { Knap01DP($M, $w, $p) };
+40  like $@, qr/Profits and Weights don't have the same size/;
+41
+42  TODO: { # I plan to provide a function to find the vector solution ...
+43    local $TODO = "Randomly generated problem";
+44    can_ok('Algorithm::Knap01DP', 'GenKnap');
+45  }
+\end{verbatim}
+
+
+[% PROCESS booktt/postamble %]

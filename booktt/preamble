@@ -1,0 +1,45 @@
+\documentclass[11pt,a4paper,oneside,onecolumn]{book}
+\usepackage{epsfig} %,boxedminipage}
+\usepackage{latexsym,amsfonts,amssymb,amstext,amsthm,float,amsmath,dsfont}
+\usepackage[spanish]{babel}    
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+\usepackage{alltt}
+\usepackage{html}
+\usepackage{makeidx}
+\usepackage{hyperref}
+
+%\topmargin -4 mm
+\voffset -10 mm
+\topmargin 0 mm
+%\headheight 10 mm
+\headheight 0 mm
+%\headsep 10 mm
+\headsep 0 mm
+
+%\textheight 229 mm
+\textheight 256 mm
+
+\oddsidemargin -5.4 mm
+\evensidemargin -5.4 mm
+
+\textwidth 17 cm
+\columnsep 10 mm
+
+\input{booktt/commontex/commands.tex}
+
+%\pagestyle{empty}
+\pagestyle{plain} %each page number
+
+%\input{amssym.def}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{[% title %]}
+\author{[% author %]}
+%%%%5   \date{\normalsize\today}
+
+\makeindex
+
+%%%%%%%%%%%%%%%%012345678012345678
+[% PROCESS booktt/navigation %]
+

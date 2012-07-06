@@ -1,0 +1,57 @@
+\documentclass[a5paper,headsepline,titlepage,landscape,12pt,normalheadings,DIVcalc]{scrbook}
+%\documentclass[a5paper,headsepline,titlepage,seascape,12pt,normalheadings,DIVcalc]{scrbook}
+\usepackage[a5paper,backref]{hyperref}
+
+\usepackage{epsfig} %,boxedminipage}
+\usepackage{latexsym,amsfonts,amssymb,amstext,amsthm,float,amsmath,dsfont}
+\usepackage[spanish]{babel}    
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+\usepackage{alltt}
+\usepackage{html}
+\usepackage{makeidx}
+
+\topmargin -4 mm
+\voffset -10 mm
+\topmargin 0 mm
+%\headheight 10 mm
+\headheight 0 mm
+%\headsep 10 mm
+\headsep 0 mm
+
+\textheight 16 cm
+%\setlength{\textheight}{17cm}
+
+\oddsidemargin -1.4 cm
+\evensidemargin -1.4 cm
+
+\textwidth 11 cm
+%\setlength{\textwidth}{17cm}
+\columnsep 10 mm
+
+\input{booktt/commontex/commands.tex}
+
+%\pagestyle{empty}
+\pagestyle{plain} %each page number
+
+%\input{amssym.def}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{[% title %]}
+\author{[% author %]}
+%%%%5   \date{\normalsize\today}
+
+\makeindex
+
+%%%%%%%%%%%%%%%%012345678012345678
+[% PROCESS booktt/navigation %]
+\begin{document}
+\topmargin=5pt
+\externallabels{http://nereida.deioc.ull.es/\~{}lhp/perlexamples/}{/home/pl/doc/casiano/PLBOOK/PLBOOK/lhplabels.pl}
+
+\tableofcontents 
+\listoffigures
+\listoftables
+
+

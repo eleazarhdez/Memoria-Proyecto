@@ -1,0 +1,4 @@
+This project contains those files that are common to all 
+Casiano books.
+It is used as an external resource in svn
+Contains templates to be used with the Template Toolkit
