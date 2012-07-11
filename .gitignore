@@ -1,0 +1,19 @@
+.dropbox
+ *~
+ *.blg"
+ *.aux
+ *.bbl
+ *.blg
+ *.dvi
+ *.idx
+ *.ilg
+ *.ind
+ *.lof
+ *.log
+ *.lot
+ *.out
+ *.pdf
+ *.ps
+ *.tex
+ *.toc
+
