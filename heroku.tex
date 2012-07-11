@@ -1,0 +1,207 @@
+%\usepackage{hyperref}  ESTO ME FALLA Y NO SE PORQUÉ
+
+
+\section{Empezar con Heroku} %{\tt system}}
+\subsection{Crear cuenta en Heroku} 
+Lo primero que tenemos que hacer es crearnos una cuenta en Heroku. Para ello nos dirigimos a la web de \href{www.heroku.com}{Heroku} y pulsamos 
+en \textbf{Login} y pulsar en  \textbf{Sign up}.Nos pedirá que introduzcamos una cuenta de correo y pulsemos en \textbf{Sign up}. 
+Ahora tendremos que revisar nuestra bandeja de entrada y pulsar el link que aparece en el correo recibido para poder confirmar nuestra cuenta.
+Una vez confirmada, tendremos nuestra cuenta creada.
+
+\subsection{Instalar Heroku Toolbelt}
+
+El siguiente paso es instalar Heroku Toolbelt en nuestro Sistema Operativo. Heroku Toolbelt está compuesto de un cliente de Heroku y Foreman 
+(opción que nos facilita correr nuestras aplicaciones localmente). En nuestro caso, que estamos trabajando sobre Linux y también sobre Ruby
+podemos instalarlo de la siguiente manera:
+
+\begin{verbatim}
+gem install heroku foreman
+\end{verbatim}
+
+Una vez instalado, para tener acceso a la línea de comando de heroku desde tu shell habrá que hacer un \"login\":
+
+\begin{verbatim}
+$ heroku login
+Enter your Heroku credentials.
+Email: adam@example.com
+Password:
+\end{verbatim}
+
+Si no tenemos ninguna clave de ssh, nos preguntará que si deseamos crear una:
+\begin{verbatim}
+Could not find an existing public key.
+Would you like to generate one? [Yn]
+Generating new SSH public key.
+Uploading ssh public key /Users/adam/.ssh/id_rsa.pub
+\end{verbatim}
+
+Ahora ya estamos preparados para crear nuestra primera aplicación en Heroku.
+Para ello nos tendremos que colocar en el directorio donde tengamos la aplicación: 
+
+\begin{verbatim}
+$ cd ~/myapp
+\end{verbatim}
+
+y una vez en dicho directorio teclear:
+
+\begin{verbatim}
+$ heroku create
+Creating stark-fog-398... done, stack is cedar
+http://stark-fog-398.herokuapp.com/ | git@heroku.com:stark-fog-398.git
+Git remote heroku added
+\end{verbatim}
+
+\section{Despliegue con Heroku} %{\tt system}}
+Heroku nos permite desplegar aplicaciones desarrolladas en lenguajes tales como Java, Phyton, Ruby, etc. En nuestro caso, haremos el despligue
+en Heroku para una aplicación desarrollada en Rails.
+\newline
+Una vez hecho el login en Heroku (\verb|heroku login|), nos colocaremos en el directorio donde esté nuestra aplicación y modificaremos nuestro
+\verb|Gemfile| cambiando esta línea:
+
+\begin{verbatim}
+gem 'sqlite3'
+\end{verbatim}
+
+por esta otra:
+
+\begin{verbatim}
+gem 'pg'
+\end{verbatim}
+
+Ahora reinstalamos nuestras dependencias tecleando:
+
+\begin{verbatim}
+ $ bundle install
+\end{verbatim}
+Esta modificación se hace debido a que Rails suele trabajar con \textbf{Sqlite3} y Heroku lo hace con \textbf{PostgreSQL}.
+
+*Nota: Para que no falle la instalación de \verb|pg| hay que tener instalada la librería libpq-dev
+
+\subsection{}
+
+Continuaremos almacenando nuestra aplicación en Git, para ello teclearemos:
+\begin{verbatim}
+$ git init
+$ git add .
+$ git commit -m "Iniciando..."
+\end{verbatim}
+
+Ahora creamos la aplicación en la pila Cedar de Heroku:
+
+\begin{verbatim}
+$ heroku create
+Creating severe-mountain-793... done, stack is cedar
+http://severe-mountain-793.herokuapp.com/ | git@heroku.com:severe-mountain-793.git
+Git remote heroku added
+\end{verbatim}
+
+Y realizamos el despliegue de nuestro código tecleando:
+
+\begin{verbatim}
+$ git push heroku master
+\end{verbatim}
+
+y nos aparecerá algo similar a esto:
+
+\begin{verbatim}
+Counting objects: 67, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (52/52), done.
+Writing objects: 100% (67/67), 86.33 KiB, done.
+Total 67 (delta 5), reused 0 (delta 0)
+
+-----> Heroku receiving push
+-----> Rails app detected
+-----> Installing dependencies using Bundler version 1.1
+       Checking for unresolved dependencies.
+       Unresolved dependencies detected.
+       Running: bundle install --without development:test --path vendor/bundle --deployment
+       Fetching source index for http://rubygems.org/
+       Installing rake (0.8.7)
+       ...
+       Installing rails (3.0.5)
+       Your bundle is complete! It was installed into ./vendor/bundle
+-----> Rails plugin injection
+       Injecting rails_log_stdout
+       Injecting rails3_serve_static_assets
+-----> Discovering process types
+       Procfile declares types -> (none)
+       Default types for Rails -> console, rake, web, worker
+-----> Compiled slug size is 8.3MB
+-----> Launching... done, v5
+       http://severe-mountain-793.herokuapp.com deployed to Heroku
+
+To git@heroku.com:severe-mountain-793.git
+ * [new branch]      master -> master
+\end{verbatim}
+
+Antes de comprobar nuestra aplicación en la web, debemos comprobar los procesos de la aplicación de la siguiente manera:
+
+\begin{verbatim}
+ $ heroku ps
+=== web: `bundle exec rails server -p $PORT`
+web.1: up for 5s
+\end{verbatim}
+
+Ahora es el momento de realizar la migración de la base de datos, para que empieze a funcionar con PostgreSQL:
+
+\begin{verbatim}
+$ heroku run rake db:migrate
+\end{verbatim}
+
+Por defecto la aplicación correrá con el \verb|rails server| que usa Webrick. Esto es conveniente para el testeo, pero para producción
+necesitaremos el uso de un servidor más robusto. Para ello incluimos en nuestro \verb|Gemfile|
+\begin{verbatim}
+ gem 'thin'
+\end{verbatim}
+ya que en la propia página de Heroku está recomendado. Completamos la instalación local de la gema tecleando en consola \verb|bundle install|
+
+Ahora para cambiar el comando que usamos para lanzar los procesos web creamos un fichero llamado \"Procfile\" e insertamos esto:
+\begin{verbatim}
+ web: bundle exec rails server thin -p $PORT -e $RACK_ENV
+\end{verbatim}
+configuramos la variable de entorno:
+\begin{verbatim}
+ $ echo "RACK_ENV=development" >>.env
+\end{verbatim}
+
+Ahora probaremos el \verb|Procfile| localmente usando \textbf{``Foreman''}. Para ello tecleamos:
+\begin{verbatim}
+ $ foreman start
+11:35:11 web.1     | started with pid 3007
+11:35:14 web.1     | => Booting thin
+11:35:14 web.1     | => Rails 3.0.4 application starting in development on http://0.0.0.0:5000
+11:35:14 web.1     | => Call with -d to detach
+11:35:14 web.1     | => Ctrl-C to shutdown server
+11:35:15 web.1     | >> Thin web server (v1.2.8 codename Black Keys)
+11:35:15 web.1     | >> Maximum connections set to 1024
+11:35:15 web.1     | >> Listening on 0.0.0.0:5000, CTRL+C to stop
+\end{verbatim}
+Si nos sale algo como lo mostrado habrá ido todo correcto. Presionamos Ctrl + C para salir y desplegamos los cambios en heroku:
+
+\begin{verbatim}
+ $ git add .
+$ git commit -m "use thin via procfile"
+$ git push heroku
+\end{verbatim}
+
+Al comprobar el log, veremos que ahora usamos \textbf{``Thin''}
+
+\begin{verbatim}
+ $ heroku logs
+2012-07-11T09:39:36+00:00 heroku[web.1]: State changed from down to starting
+2012-07-11T09:39:38+00:00 heroku[web.1]: Starting process with command `bundle exec rails server thin -p 22617 -e production`
+2012-07-11T09:39:44+00:00 app[web.1]: => Booting Thin
+2012-07-11T09:39:44+00:00 app[web.1]: => Rails 3.2.6 application starting in production on http://0.0.0.0:22617
+2012-07-11T09:39:44+00:00 app[web.1]: => Call with -d to detach
+2012-07-11T09:39:44+00:00 app[web.1]: => Ctrl-C to shutdown server
+2012-07-11T09:39:44+00:00 app[web.1]: Connecting to database specified by DATABASE_URL
+2012-07-11T09:39:44+00:00 app[web.1]: >> Thin web server (v1.4.1 codename Chromeo)
+2012-07-11T09:39:44+00:00 app[web.1]: >> Maximum connections set to 1024
+2012-07-11T09:39:44+00:00 app[web.1]: >> Listening on 0.0.0.0:22617, CTRL+C to stop
+2012-07-11T09:39:45+00:00 heroku[web.1]: State changed from starting to up
+
+\end{verbatim}
+
+
+

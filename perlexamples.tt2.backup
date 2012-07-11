@@ -66,11 +66,6 @@ Superior Informática en la Universidad de La Laguna'
 \label{chapter:ejecuciondeprogramas}
 \input{ejecuciondeprogramas.tex}
 
-\chapter{Despliegue en Heroku}
-\label{chapter:Despliegue en Heroku}
-\input{heroku.tex}
-
-
 
 \part*{Apéndice}
 
